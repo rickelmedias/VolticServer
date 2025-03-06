@@ -1,62 +1,28 @@
-# code-with-quarkus
+## Execução
+Como rodar na sua maquina `quarkus dev`.
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Documentação
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+### Parte 1 - Conectar MQTT
+Conexão para permitir o Dispotivo Inteligente conversar com a Plataforma
 
-## Running the application in dev mode
+- https://hub.docker.com/_/eclipse-mosquitto
+- https://quarkus.io/guides/messaging
+- https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html
+- https://quarkus.io/extensions/io.quarkus/quarkus-messaging-mqtt/
 
-You can run your application in dev mode that enables live coding using:
+##### Comandos utilizados
 
-```shell script
-./mvnw quarkus:dev
-```
+Como iniciar container do mosquitto.
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+`docker run -it -p 1883:1883 -v "$PWD/mosquitto/config:/mosquitto/config" eclipse-mosquitto`
 
-## Packaging and running the application
+Como acessar o container do mosquitto.
 
-The application can be packaged using:
+`docker exec -it <nome_container> /bin/sh`
 
-```shell script
-./mvnw package
-```
+Como mandar uma mensagem de pub dentro do container do mosquitto.
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+`mosquitto_pub -h localhost -t source -m "Teste" -u r1ddax -P 123456`
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+### Parte 2 - RestAPI com Autenticação e Autorização
