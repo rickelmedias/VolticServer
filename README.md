@@ -61,6 +61,24 @@ allow_anonymous false
 password_file /mosquitto/config/pass
 ```
 
+Se quiser rodar o mosquitto também com **docker-compose.yml**, podemos criar:
+
+```
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+```
+
 ##### Como mandar uma mensagem de pub dentro do container do mosquitto.
 
 `mosquitto_pub -h localhost -t source -m "Teste" -u r1ddax -P 123456`
